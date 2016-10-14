@@ -11,13 +11,13 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ","").length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split.count
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.downcase.split.count(@special_word.downcase)
 
     # ================================================================================
     # Your code goes above.
@@ -37,8 +37,11 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
+    @monthly_interest = (@apr / 12) / 100
+    @months = @years * 12
 
-    @monthly_payment = "Replace this string with your answer."
+
+    @monthly_payment = (@monthly_interest * @principal) / (1-((1+@monthly_interest)**-@months))
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +63,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = (@ending-@starting).to_f
+    @minutes = (@seconds / 60).to_f
+    @hours = (@minutes / 60).to_f
+    @days = (@hours / 24).to_f
+    @weeks = (@days / 7).to_f
+    @years = (@days / (((365*3)+(366))/4)).to_f
 
     # ================================================================================
     # Your code goes above.
@@ -82,25 +85,62 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count.to_i
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @sorted_numbers.first
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @sorted_numbers.last
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    if @count.even?
 
-    @sum = "Replace this string with your answer."
+      @median = (@sorted_numbers[(@count/2).to_i - 1] + @sorted_numbers[(@count/2).to_i]) / 2
 
-    @mean = "Replace this string with your answer."
+    elsif @count.odd?
 
-    @variance = "Replace this string with your answer."
+      @median = @sorted_numbers[(@count/2).to_i]
 
-    @standard_deviation = "Replace this string with your answer."
+    end
+
+    @sum = 0
+
+    @numbers.each do |num|
+      @sum = @sum + num
+    end
+
+    @mean = @sum / @count
+
+
+    @sqdiff_mean_table = []
+    @numbers.each do |num|
+      @diff_of_mean = num - @mean
+      @sqdiff_mean_table.push(@diff_of_mean**2)
+    end
+
+    @sq_sum_of_diffs = 0
+
+    @sqdiff_mean_table.each do |sqdiffmean|
+      @sq_sum_of_diffs = @sq_sum_of_diffs + sqdiffmean
+    end
+
+    @variance = @sq_sum_of_diffs / @count
+
+    @standard_deviation = @variance ** 0.5
+
+  # @occurrences = @text.downcase.split.count(@special_word.downcase)
+
+  @sort_table_with_count
+  @numbercount = 0
+  @lastnumber = 0.to_f
+  @sorted_numbers.each do |snum|
+    if @lastnumber == snum
+      @numbercount = @numbercount + 1
+    end
+    @lastnumber = snum
+  end
 
     @mode = "Replace this string with your answer."
 
