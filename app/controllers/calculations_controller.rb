@@ -130,19 +130,18 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = @variance ** 0.5
 
-  # @occurrences = @text.downcase.split.count(@special_word.downcase)
 
-  @sort_table_with_count
-  @numbercount = 0
-  @lastnumber = 0.to_f
+  @most_present_number_count = 0
+
   @sorted_numbers.each do |snum|
-    if @lastnumber == snum
-      @numbercount = @numbercount + 1
+    if @sorted_numbers.count(snum) > @most_present_number_count
+
+      @most_present_number_count = @sorted_numbers.count(snum)
+      @most_present_number = snum
     end
-    @lastnumber = snum
   end
 
-    @mode = "Replace this string with your answer."
+    @mode = @most_present_number
 
     # ================================================================================
     # Your code goes above.
